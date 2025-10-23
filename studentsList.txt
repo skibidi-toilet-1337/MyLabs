@@ -1,0 +1,10 @@
+Shcherbakov Yaroslav PI-228 4 3 5
+Shulgin Maxim PMI-1337 5 4 4
+Minina Sofia FIT-777 3 3 4
+Fedorova Anastasia PI-228 5 5 5
+Martynova Maria FIT-777 5 4 3
+Kruglova Daria FIT-777 3 5 3
+Zakharov Ivan PMI-1337 5 4 3
+Gusev Andrey PI-228 3 3 5
+Volkov Maxim PMI-1337 4 4 4
+Sycheva Amira PI-228 5 5 5
