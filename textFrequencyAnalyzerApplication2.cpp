@@ -1,4 +1,9 @@
-﻿#include <iostream>
+﻿/***********************
+ * Автор: Бобкова Е.А. *
+ * Дата: 06.11.2025    *
+ ***********************/
+
+#include <iostream>
 #include <cmath>
 #include <fstream>
 #include <string>
