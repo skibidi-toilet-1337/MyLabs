@@ -1,21 +1,28 @@
-﻿#include <conio.h>
+﻿/***********************
+ * Автор: Бобкова Е.А. *
+ ***********************/
+
+#include <conio.h>
 #include <iostream>
 #include <windows.h>
 #include <string>
+
 using namespace std;
 
-//w & h of a game field
 const int width = 80;
 const int height = 20;
+
 //snake head coords
 int x, y;
+
 //food coords
 int fruitCordX, fruitCordY;
-//
+
 int playerScore;
+
 //arr to store coords of snake tail
 int snakeTailX[100], snakeTailY[100];
-//
+
 int snakeTailLen;
 enum snakesDirection { STOP = 0, LEFT, RIGHT, UP, DOWN };
 snakesDirection sDir;
@@ -39,10 +46,7 @@ void gameRender(string playerName) {
   for (int iteration = 0; iteration < width + 2; ++iteration) {
     cout << "-";
   }
-
   cout << endl;
-
-  //hardcore part
 
   //creating game field
   for (int iterationX = 0; iterationX < height; ++iterationX) {
@@ -60,8 +64,8 @@ void gameRender(string playerName) {
       //fruit
       else if (iterationX == fruitCordY && iterationY == fruitCordX) {
         cout << "q";
-      }
 
+      }
       else {
         bool prTail = false;
         for (int iter = 0; iter < snakeTailLen; ++iter) {
@@ -99,6 +103,8 @@ void updateGameLogic() {
   for (int iteration = 1; iteration < snakeTailLen; ++iteration) {
     prevX1 = snakeTailX[iteration];
     prevY1 = snakeTailY[iteration];
+    snakeTailX[iteration] = prevX;
+    snakeTailY[iteration] = prevY;
     prevX = prevX1;
     prevY = prevY1;
   }
@@ -136,55 +142,28 @@ void updateGameLogic() {
     playerScore += 10;
     fruitCordX = rand() % width;
     fruitCordY = rand() % height;
-    snakeTailLen++;
+    ++snakeTailLen;
   }
-}
-
-int setDifficulty() {
-  int difficulty, choice;
-  cout << "\nSet difficulty (snake speed)\n1: Easy (slow)\n2: Medium (normal)\n3: Hard (fast) "
-          "\nIf not set, it will be medium (normal) "
-          "\nChoose difficulty lvl: ";
-  cin >> choice;
-
-  switch (choice) {
-    case '1':
-      difficulty = 50;
-      break;
-
-    case '2':
-      difficulty = 100;
-      break;
-
-    case '3':
-      difficulty = 150;
-      break;
-
-    default:
-      difficulty = 100;
-      break;
-  }
-  return difficulty;
 }
 
 void userInput() {
   if (_kbhit()) {
     switch (_getch()) {
-      case 'a':
-        sDir = LEFT;
-        break;
-      case 'd':
-        sDir = RIGHT;
-        break;
-      case 'w':
-        sDir = UP;
-        break;
-      case 's':
-        sDir = DOWN;
-        break;
-      case 'x':
-        isGameOver = true;
-        break;
+    case 'a':
+      sDir = LEFT;
+      break;
+    case 'd':
+      sDir = RIGHT;
+      break;
+    case 'w':
+      sDir = UP;
+      break;
+    case 's':
+      sDir = DOWN;
+      break;
+    case 'x':
+      isGameOver = true;
+      break;
     }
   }
 }
@@ -194,17 +173,15 @@ int main() {
   string playerName;
   cout << "Enter your name: ";
   cin >> playerName;
-  int difficulty = setDifficulty();
 
   gameInit();
+
   while (!isGameOver) {
     gameRender(playerName);
     userInput();
     updateGameLogic();
-    Sleep(difficulty);
-
+    Sleep(100);
   }
 
   return 0;
 }
-
