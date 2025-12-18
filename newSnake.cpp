@@ -6,17 +6,25 @@
 #include <iostream>
 #include <windows.h>
 #include <string>
+#include <chrono>
+#include <thread>
 
 using namespace std;
+using namespace chrono;
 
 const int width = 80;
 const int height = 20;
+int bombTimer;
+int prevTime;
 
 //snake head coords
 int x, y;
 
 //food coords
 int fruitCordX, fruitCordY;
+
+//spike coords
+int bombCordX, bombCordY;
 
 int playerScore;
 
@@ -36,6 +44,12 @@ void gameInit() {
   //generating random cords for fruit in game field
   fruitCordX = rand() % width;
   fruitCordY = rand() % height;
+
+  //gen rand cords for bomb
+  bombCordX = rand() % width;
+  bombCordY = rand() % height;
+  bombTimer = 3000;
+  prevTime = GetTickCount();
   playerScore = 0;
 }
 
@@ -64,8 +78,12 @@ void gameRender(string playerName) {
       //fruit
       else if (iterationX == fruitCordY && iterationY == fruitCordX) {
         cout << "q";
-
+      } 
+      
+      else if (iterationX == bombCordY && iterationY == bombCordX) {
+        cout << "*";
       }
+
       else {
         bool prTail = false;
         for (int iter = 0; iter < snakeTailLen; ++iter) {
@@ -85,15 +103,33 @@ void gameRender(string playerName) {
   //creating bottom walls with symbol -
   for (int iteration = 0; iteration < width + 2; ++iteration) {
     cout << "-";
-
   }
-  cout << endl;
 
+  cout << endl;
   cout << playerName << "'s Score: " << playerScore << endl;
 
 }
 
+void bombGen() {
+  
+  bombCordX = rand() % width;
+  bombCordY = rand() % height;
+  /**for (int second = 3; second > 0; --second) {
+    bombCordX = rand() % width;
+    bombCordY = rand() % height;
+    this_thread::sleep_for(chrono::seconds(1));
+
+  }*/
+  //Sleep(3000);
+
+}
+
 void updateGameLogic() {
+
+  int currTime = GetTickCount();
+  int delta = currTime - prevTime;
+  prevTime = currTime;
+
   int prevX = snakeTailX[0];
   int prevY = snakeTailY[0];
   int prevX1, prevY1;
@@ -143,8 +179,21 @@ void updateGameLogic() {
     fruitCordX = rand() % width;
     fruitCordY = rand() % height;
     ++snakeTailLen;
+  } else if (x == bombCordX && y == bombCordY) {
+    isGameOver = true;
   }
+  
+  if (bombTimer > delta) {
+    bombTimer -= delta;
+
+  } else {
+    bombGen();
+    bombTimer = 3000;
+  }
+  
 }
+
+
 
 void userInput() {
   if (_kbhit()) {
@@ -182,6 +231,9 @@ int main() {
     updateGameLogic();
     Sleep(100);
   }
+
+  //system("cls");
+  cout << "GAME OVER";
 
   return 0;
 }
